@@ -10,15 +10,17 @@ const execa = require('execa');
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
+	// First， local must have this extension with php
 	let moduleReg = /swoole/;
-	const conf = vscode.workspace.getConfiguration('php')
 	let currentModuleArray = await execa.shell('php -m')
 	if (!moduleReg.test(currentModuleArray.stdout)) {
-		let errMsg = 'Must have swoole extension with PHP!\nYou can visit "https://www.swoole.com/page/download" to download and install!'
+		let errMsg = 'Must have swoole extension in your Runtime environment!\nYou can visit "https://www.swoole.com/page/download" to download and install!'
 		console.error(errMsg)
 		vscode.window.showWarningMessage(errMsg)
 		return 
 	}
+
+	const conf = vscode.workspace.getConfiguration('php')
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	//console.log('Congratulations, your extension "vscode-swoole-helper" is now active!');
